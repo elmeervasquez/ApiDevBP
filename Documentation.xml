@@ -6,7 +6,7 @@
     <members>
         <member name="T:ApiDevBP.Configuration.DependencyInjectionSetup">
             <summary>
-            Class DependencyInjectionSetup allows to separate all the injection and configuration services as installer classes.
+            Class DependencyInjectionSetup allows to separate all the injection and configuration services that implements IServiceInstaller.
             Credits: Milan Jovanovic. Microsoft MVP Architecture.
             </summary>
         </member>
