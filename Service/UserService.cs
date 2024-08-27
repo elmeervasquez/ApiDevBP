@@ -28,8 +28,12 @@ namespace ApiDevBP.Services
 
         public void Delete(int id)
         {
-            var entity = _userRepository.GetById<UserEntity>(id);
-            _userRepository.Delete(entity);
+            var entityToDelete = _userRepository.GetById<UserEntity>(id);
+            if (entityToDelete == null)
+            {
+                throw new Exception("User not found");
+            }
+            _userRepository.Delete(entityToDelete);
         }
 
         public UserEntity? Update(int id, UserEntity model)
