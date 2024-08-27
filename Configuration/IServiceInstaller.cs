@@ -1,4 +1,4 @@
-﻿namespace planck.API.Configuration
+﻿namespace ApiDevBP.Configuration
 {
     public interface IServiceInstaller
     {

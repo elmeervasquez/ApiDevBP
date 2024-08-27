@@ -1,19 +1,18 @@
 
 using ApiDevBP.Entities;
+using ApiDevBP.Models;
 
 namespace ApiDevBP.Services
 {
     public interface IUserService
     {
-        UserEntity Create(string name, string lastName);
+        UserEntity Create(UserEntity entity);
 
         void Delete(int id);
 
-        void Update(int id);
+        UserEntity Update(int id, UserEntity entity);
 
         List<UserEntity> GetUsers();
-        UserEntity GetUserById();
-        UserEntity GetUserByNameOrLastName(string name);
-
+        UserEntity GetUserById(int id);
     }
 }

@@ -1,11 +1,13 @@
+using System.Net;
 using ApiDevBP.Configuration;
 using ApiDevBP.Entities;
 using ApiDevBP.Models;
+using ApiDevBP.Persistence;
 using ApiDevBP.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SQLite;
-using System.Reflection;
 
 namespace ApiDevBP.Controllers
 {
@@ -13,60 +15,46 @@ namespace ApiDevBP.Controllers
     [Route("[controller]")]
     public class UsersController : ControllerBase
     {
-        private readonly SQLiteConnection _db;
-
-        private readonly ILogger<UsersController> _logger;
+        private readonly IMapper _mapper;
 
         private readonly IUserService _userService;
 
-        private readonly IOptions<DbSettings> _dbSettings;
-
-        public UsersController(ILogger<UsersController> logger, IUserService userService, IOptions<DbSettings> dbSettings)
+        public UsersController(IUserService userService, IMapper mapper)
         {
-            _logger = logger;
-            string localDb = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "localDb");
-            Console.WriteLine(localDb);
-            _db = new SQLiteConnection(localDb);
-            _db.CreateTable<UserEntity>();
             _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
-            var users = _db.Query<UserEntity>($"Select * from Users");
+            var users = _userService.GetUsers();
             if (users != null)
             {
-                return Ok(users.Select(x => new UserModel()
-                {
-                    Name = x.Name,
-                    Lastname = x.Lastname
-                }));
+                return Ok(_mapper.Map<List<UserModel>>(users));
             }
             return NotFound();
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateUser(string name, string userName)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, UserModel model)
         {
-            // var result = _db.Insert(new UserEntity()
-            // {
-            //     Name = user.Name,
-            //     Lastname = user.Lastname
-            // });
-            // return Ok(result > 0);
-            return Ok();
+            var result = _userService.Update(id, _mapper.Map<UserEntity>(model));
+            return Ok(_mapper.Map<UserModel>(result));
         }
 
         [HttpPost]
         public async Task<IActionResult> SaveUser(UserModel user)
         {
-            var result = _db.Insert(new UserEntity()
-            {
-                Name = user.Name,
-                Lastname = user.Lastname
-            });
-            return Ok(result > 0);
+            var result = _userService.Create(_mapper.Map<UserEntity>(user));
+            return Ok(_mapper.Map<UserModel>(result));
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            _userService.Delete(id);
+            return Ok();
         }
 
     }

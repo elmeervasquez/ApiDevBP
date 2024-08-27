@@ -9,7 +9,13 @@ namespace ApiDevBP.Entities
         [PrimaryKey, AutoIncrement]
         [JsonIgnore]
         public int Id { get; set; }
-        public string Name { get; set; } 
+        public string Name { get; set; }
         public string Lastname { get; set; }
+
+        public void Update(string name, string lastName)
+        {
+            Name = name;
+            Lastname = lastName;
+        }
     }
 }

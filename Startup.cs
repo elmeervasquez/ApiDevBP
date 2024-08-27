@@ -1,11 +1,8 @@
-// ﻿using planck.API.Configuration;
-// using planck.API.Middlewares;
-// using planck.API.Service;
-using Microsoft.OpenApi.Models;
-using planck.API.Configuration;
+using ApiDevBP.Configuration;
+using ApiDevBP.Middlewares;
 using Serilog;
 
-namespace planck.API
+namespace ApiDevBP.API
 {
     public class Startup
     {
@@ -19,15 +16,12 @@ namespace planck.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.InstallServices(Configuration, typeof(IServiceInstaller).Assembly);
-            // services.AddTransient<TraceMiddleware>();
-            // services.AddTransient<GlobalExceptionMiddleware>();
+            services.AddTransient<GlobalExceptionMiddleware>();
 
             // Add services to the container.
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
                 .CreateBootstrapLogger();
-
-            // builder.Host.UseSerilog();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -38,8 +32,9 @@ namespace planck.API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseMiddleware<GlobalExceptionMiddleware>();
 
-            // app.UseSerilogRequestLogging();
+            app.UseSerilogRequestLogging();
 
             app.UseHttpsRedirection();
 
@@ -49,13 +44,6 @@ namespace planck.API
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
-            // ConfigureMiddlewares(app);
         }
-
-        // private void ConfigureMiddlewares(IApplicationBuilder app)
-        // {
-        //     app.UseMiddleware<TraceMiddleware>();
-        //     app.UseMiddleware<GlobalExceptionMiddleware>();
-        // }
     }
 }

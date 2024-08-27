@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 
-namespace planck.API.Configuration
+namespace ApiDevBP.Configuration
 {
     /// <summary>
-    /// Class DependencyInjectionSetup allows to separate all the injection and configuration services as installer classes.
+    /// Class DependencyInjectionSetup allows to separate all the injection and configuration services that implements IServiceInstaller.
     /// Credits: Milan Jovanovic. Microsoft MVP Architecture.
     /// </summary>
     public static class DependencyInjectionSetup

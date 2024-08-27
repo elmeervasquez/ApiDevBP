@@ -1,6 +1,6 @@
 ﻿using Microsoft.OpenApi.Models;
 
-namespace planck.API.Configuration
+namespace ApiDevBP.Configuration
 {
     public class PresentationServiceInstaller : IServiceInstaller
     {

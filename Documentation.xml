@@ -4,7 +4,7 @@
         <name>ApiDevBP</name>
     </assembly>
     <members>
-        <member name="T:planck.API.Configuration.DependencyInjectionSetup">
+        <member name="T:ApiDevBP.Configuration.DependencyInjectionSetup">
             <summary>
             Class DependencyInjectionSetup allows to separate all the injection and configuration services as installer classes.
             Credits: Milan Jovanovic. Microsoft MVP Architecture.

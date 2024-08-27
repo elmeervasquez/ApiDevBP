@@ -1,14 +1,18 @@
 ﻿using System.Reflection;
 using ApiDevBP.Common;
-using ApiDevBP.Configuration;
+using ApiDevBP.Persistence;
 
-namespace planck.API.Configuration
+namespace ApiDevBP.Configuration
 {
     public class ApplicationServiceInstaller : IServiceInstaller
     {
         public void Install(IServiceCollection services, IConfiguration configuration)
         {
             services.AddAutoMapper(typeof(IMapperProfile));
+
+            services.AddTransient<BaseRepository>();
+
+            services.AddTransient<DbContext>();
 
             services.Configure<DbSettings>(configuration.GetSection(nameof(DbSettings)));
 
@@ -28,7 +32,6 @@ namespace planck.API.Configuration
 
             foreach (var implementedClass in implementedClasses)
             {
-                // TODO: Check if we should throw exception if multiple interfaces are declarated. Could be a previous validation.
                 var serviceInterface = assemblies.DefinedTypes.Where(t => IsInterfaceServiceForImplementation(t, implementedClass)).FirstOrDefault();
 
                 if (serviceInterface != null)
